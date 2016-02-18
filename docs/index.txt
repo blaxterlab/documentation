@@ -1,0 +1,20 @@
+.. Blaxter Lab documentation master file, created by
+   sphinx-quickstart on Wed Feb 17 10:59:34 2016.
+
+Documentation
+=============
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   repeat-masking
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
