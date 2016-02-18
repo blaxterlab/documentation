@@ -47,7 +47,7 @@ source_suffix = '.txt'
 master_doc = 'index'
 
 # General information about the project.
-project = u'documantation'
+project = u'documentation'
 copyright = u'2016, Blaxter Lab, University of Edinburgh'
 author = u'Blaxter Lab members'
 
