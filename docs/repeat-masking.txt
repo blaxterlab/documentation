@@ -1,9 +1,14 @@
+.. _repeat-masking:
+
+##############
 Repeat masking
-==============
+##############
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   repeatmodeler
+   repeatmodeler-builddatabase
    trf

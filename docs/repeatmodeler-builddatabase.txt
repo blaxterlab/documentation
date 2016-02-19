@@ -1,0 +1,48 @@
+.. _repeatmodeler-builddatabase:
+
+#############
+BuildDatabase
+#############
+
+Wrapper around makeblastdb to format blast databases for use with
+:ref:`repeatmodeler-repeatmodeler`.
+
+
+******************
+Program parameters
+******************
+
+::
+
+  -name <database name>
+      The name of the database to create.
+
+  -engine <engine name>
+      The name of the search engine we are using. I.e abblast/wublast or
+      ncbi (rmblast version).
+
+  -dir <directory>
+      The name of a directory containing fasta files to be processed. The
+      files are recognized by their suffix. Only *.fa and *.fasta files
+      are processed.
+
+  -batch <file>
+      The name of a file which contains the names of fasta files to
+      process. The files names are listed one per line and should be fully
+      qualified.
+
+
+*************
+Typical usage
+*************
+
+::
+
+  /exports/software/repeatmodeler/RepeatModeler/BuildDatabase -engine ncbi -name mydb seq.fa
+
+
+******************
+Gridengine wrapper
+******************
+
+See :ref:`repeatmodeler`.

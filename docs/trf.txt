@@ -1,5 +1,7 @@
+.. _trf:
+
 ###
-trf
+TRF
 ###
 
 Tandem Repeats Finder [1]_ (`link <http://tandem.bu.edu/trf/trf.unix.help.html>`_)
