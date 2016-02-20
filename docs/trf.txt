@@ -145,7 +145,7 @@ trf.sh:
   #       export DATADIR=`pwd`
   #       qsub -v SEQFILE=seq.fa ...
 
-  WORKDIR=/scratch/$USER/trf
+  WORKDIR=/scratch/$USER/trf/$JOB_ID
   mkdir -p $WORKDIR
   cp $DATADIR/$SEQFILE $WORKDIR
   cd $WORKDIR
