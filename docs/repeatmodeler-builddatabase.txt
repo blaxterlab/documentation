@@ -5,7 +5,7 @@ BuildDatabase
 #############
 
 Wrapper around makeblastdb to format blast databases for use with
-:ref:`repeatmodeler-repeatmodeler`.
+:ref:`repeatmodeler`.
 
 
 ******************

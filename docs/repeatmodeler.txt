@@ -102,7 +102,8 @@ to avoid flooding queue.
 
 .. code-block:: bash
 
-  parallel -j 2 qsub -v SEQFILE={} -v DATABASE=mydb -pe smp 32 -sync y /path/to/repeatmodeler.sh ::: *.fa
+  export DATADIR=`pwd`
+  parallel -j 2 qsub -v SEQFILE={} -v DATABASE={.} -pe smp 32 -sync y /path/to/repeatmodeler.sh ::: *.fa
 
 
 *********
