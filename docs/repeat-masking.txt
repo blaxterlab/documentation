@@ -13,4 +13,5 @@ Contents:
    repeatmodeler
    filter-repeatmodeler-library
    combine-repeat-libraries
+   repeatmasker
    trf

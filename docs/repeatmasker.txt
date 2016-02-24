@@ -1,0 +1,47 @@
+.. _repeatmasker:
+
+############
+RepeatMasker
+############
+
+*************
+Typical Usage
+*************
+
+::
+
+  /exports/software/repeatmasker/repeatmasker-4-0-5/RepeatMasker \
+         -pa 48 \
+         -lib taxon.repeatlib.fa \
+         -dir . \
+         seq.fa
+
+******************
+Gridengine wrapper
+******************
+
+RepeatMasker will use more threads than defined by ``-pa`` so use ``nice``
+
+repeatmasker.sh:
+
+.. code-block:: bash
+
+  #!/bin/bash
+
+  #$ -V
+  #$ -cwd
+  #$ -j y
+  #$ -o $JOB_ID.log
+
+  #       export DATADIR=`pwd`
+  #              -v SEQFILE=seq.fa
+  #              -v REPLIB=repeatLib.fa ...
+
+  WORKDIR=/scratch/$USER/repeatmasker/$JOB_ID
+  mkdir -p $WORKDIR
+  cd $WORKDIR
+  /exports/software/repeatmasker/repeatmasker-4-0-5/RepeatMasker \
+         -pa $NSLOTS \
+         -lib $DATADIR/$REPLIB \
+         -dir . \
+         $DATADIR/$SEQFILE
