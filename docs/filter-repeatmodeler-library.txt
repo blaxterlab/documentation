@@ -105,7 +105,7 @@ filter_repmodlib.sh:
          -outfmt '6 qseqid staxids bitscore std sscinames sskingdoms stitle' \
          -max_target_seqs 25 \
          -culling_limit 2 \
-         -num_threads 48 \
+         -num_threads $NSLOTS \
          -evalue 1e-10 \
          -out $REPMODLIB.vs.$TSCSEQFILE.25cul2.1e10.megablast.out
 
