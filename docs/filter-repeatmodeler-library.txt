@@ -1,0 +1,125 @@
+.. _filter-repeatmodeler-library:
+
+############################
+Filter RepeatModeler Library
+############################
+
+Repeat libraries built with :ref:`repeatmodeler` may contain non-TE protein
+coding sequences.  If masking an annotated genome, filter the library using
+:ref:`repeatmasker` ``RepeatPeps.lib`` and a proteome to remove 'genuine'
+protein hits.
+
+
+***************
+Filtering steps
+***************
+
+Blast proteome against RepeatMasker TE database
+===============================================
+
+::
+
+  blastp -query proteins.fa \
+         -db /exports/software/repeatmasker/repeatmasker-4-0-5/Libraries/RepeatPeps.lib \
+         -outfmt '6 qseqid staxids bitscore std sscinames sskingdoms stitle' \
+         -max_target_seqs 25 \
+         -culling_limit 2 \
+         -num_threads 48 \
+         -evalue 1e-5 \
+         -out proteins.fa.vs.RepeatPeps.25cul2.1e5.blastp.out
+
+Remove TEs from proteome
+========================
+
+::
+
+  fastaqual_select -f transcripts.fa \
+         -e <(awk '{print $1}' proteins.fa.vs.RepeatPeps.25cul2.1e5.blastp.out | sort | uniq) > transcripts.no_tes.fa
+ 
+Blast proteome against RepeatModeler library
+============================================
+
+::
+
+  makeblastdb -in transcripts.no_tes.fa -dbtype nucl
+  blastn -task megablast \
+         -query consensi.fa.classified \
+         -db transcripts.no_tes.fa \
+         -outfmt '6 qseqid staxids bitscore std sscinames sskingdoms stitle' \
+         -max_target_seqs 25 \
+         -culling_limit 2 \
+         -num_threads 48 \
+         -evalue 1e-10 \
+         -out repeatmodeller_lib.vs.transcripts.no_tes.25cul2.1e10.megablast.out
+
+Remove hits from RepeatModeler library
+======================================
+
+::
+
+  fastaqual_select -f consensi.fa.classified \
+         -e <(awk '{print $1}' ../../repeatmodeller_lib.vs.transcripts.no_tes.25cul2.1e25.megablast.out | sort | uniq) > consensi.fa.classified.filtered_for_CDS_repeats.fa
+
+
+*******************
+Grid engine wrapper
+*******************
+
+filter_repmodlib.sh:
+
+.. code-block:: bash
+
+  #!/bin/bash
+
+  #$ -V
+  #$ -cwd
+  #$ -j y
+  #$ -o $JOB_ID.log
+  . /etc/profile.d/modules.sh
+  module load blast
+
+  # export DATADIR=/path/to/
+  # qsub -v PROTSEQFILE=proteins.fa
+  #      -v BLASTPDB=/path/to/RepeatPeps.lib
+  #      -v TSCSEQFILE=transcripts.fa
+  #      -v REPMODLIB=consensi.fa.classified
+
+  WORKDIR=/scratch/$USER/blastp/$JOB_ID
+  mkdir -p $WORKDIR
+  cd $WORKDIR
+
+  # Blast proteome against RepeatMasker TE database
+  blastp -query $DATADIR/$PROTSEQFILE -db $BLASTPDB -outfmt '6 qseqid staxids bitscore std sscinames sskingdoms stitle' \
+         -max_target_seqs 25 -culling_limit 2 -num_threads $NSLOTS -evalue 1e-5 \
+         -out $PROTSEQFILE.vs.RepeatPeps.25cul2.1e5.blastp.out
+
+  # Remove TEs from proteome
+  /exports/colossus/lepbase/repeatmasking/fastaqual_select -f $DATADIR/$TSCSEQFILE \
+         -e <(awk '{print $1}' $PROTSEQFILE.vs.RepeatPeps.25cul2.1e5.blastp.out | sort | uniq) > $TSCSEQFILE.no_tes.fa
+
+  # Blast proteome against RepeatModeler library
+  makeblastdb -in $TSCSEQFILE.no_tes.fa -dbtype nucl
+  blastn -task megablast \
+         -query $DATADIR/$REPMODLIB \
+         -db $TSCSEQFILE.no_tes.fa \
+         -outfmt '6 qseqid staxids bitscore std sscinames sskingdoms stitle' \
+         -max_target_seqs 25 \
+         -culling_limit 2 \
+         -num_threads 48 \
+         -evalue 1e-10 \
+         -out $REPMODLIB.vs.$TSCSEQFILE.25cul2.1e10.megablast.out
+
+  # Remove hits from RepeatModeler library
+  /exports/colossus/lepbase/repeatmasking/fastaqual_select -f $DATADIR/$REPMODLIB \
+         -e <(awk '{print $1}' $REPMODLIB.vs.$TSCSEQFILE.25cul2.1e10.megablast.out | sort | uniq) > $REPMODLIB.filtered_for_CDS_repeats.fa
+
+  rsync -a --remove-source-files ./$REPMODLIB.filtered_for_CDS_repeats.fa $DATADIR
+
+
+qsub command
+============
+
+.. code-block:: bash
+
+  export DATADIR=`pwd`
+  qsub -pe smp 16 -v PROTSEQFILE=proteins.fa -v BLASTPDB=/path/to/RepeatPeps.lib -v TSCSEQFILE=transcripts.fa -v REPMODLIB=consensi.fa.classified /path/to/filter_repmodlib.sh

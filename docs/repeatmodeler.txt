@@ -10,7 +10,7 @@ RepeatModeler (`link <http://www.repeatmasker.org/RepeatModeler.html>`_)
 
 *de novo* repeat family identification and modeling using RECON, RepeatScout,
 :ref:`trf` & RMBlast [*]_ on blast databases formatted with
-:ref:`repeatmodeler-builddatabase`.
+:ref:`builddatabase`.
 
 
 ******************

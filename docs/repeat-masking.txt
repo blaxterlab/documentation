@@ -9,6 +9,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   builddatabase
    repeatmodeler
-   repeatmodeler-builddatabase
+   filter-repeatmodeler-library
    trf
