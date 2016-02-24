@@ -12,4 +12,5 @@ Contents:
    builddatabase
    repeatmodeler
    filter-repeatmodeler-library
+   combine-repeat-libraries
    trf

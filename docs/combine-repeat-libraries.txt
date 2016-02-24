@@ -1,0 +1,19 @@
+.. _combine-repeat-libraries:
+
+########################
+Combine Repeat Libraries
+########################
+
+Use the :ref:`repeatmasker` tool ``queryRepeatDatabase.pl`` to extract
+taxon-specific repeats:
+
+::
+
+  /exports/software/repeatmasker/repeatmasker-4-0-5/util/queryRepeatDatabase.pl \
+         -species "taxon" > repeatmasker.taxon.fa
+
+and combine with a repeatmodeller library:
+
+::
+
+  cat repeatmasker.taxon.fa taxon.consensi.fa.classified > taxon.repeatlib.fa
