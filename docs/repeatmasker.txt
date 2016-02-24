@@ -16,6 +16,7 @@ Typical Usage
          -dir . \
          seq.fa
 
+
 ******************
 Gridengine wrapper
 ******************
@@ -40,8 +41,18 @@ repeatmasker.sh:
   WORKDIR=/scratch/$USER/repeatmasker/$JOB_ID
   mkdir -p $WORKDIR
   cd $WORKDIR
-  /exports/software/repeatmasker/repeatmasker-4-0-5/RepeatMasker \
+  nice -n 10 /exports/software/repeatmasker/repeatmasker-4-0-5/RepeatMasker \
          -pa $NSLOTS \
          -lib $DATADIR/$REPLIB \
          -dir . \
          $DATADIR/$SEQFILE
+
+
+************
+qsub command
+************
+
+::
+
+  export DATADIR=`pwd`
+  qsub -v SEQFILE=seq.fa -v REPLIB=repeatLib.fa -pe smp 32 /path/to/repeatmasker.sh

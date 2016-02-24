@@ -12,8 +12,10 @@ taxon-specific repeats:
   /exports/software/repeatmasker/repeatmasker-4-0-5/util/queryRepeatDatabase.pl \
          -species "taxon" > repeatmasker.taxon.fa
 
-and combine with a repeatmodeller library:
+and combine with a repeatmodeller library.  The output of
+``queryRepeatDatabase.pl`` has an additional line at the begining before the
+start of the fasta format sequences so use ``tail -n+2`` to skip the first line:
 
 ::
 
-  cat repeatmasker.taxon.fa taxon.consensi.fa.classified > taxon.repeatlib.fa
+  tail -n+2 repeatmasker.taxon.fa | cat - taxon.consensi.fa.classified > taxon.repeatlib.fa
