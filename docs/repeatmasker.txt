@@ -21,8 +21,6 @@ Typical Usage
 Gridengine wrapper
 ******************
 
-RepeatMasker will use more threads than defined by ``-pa`` so use ``nice``
-
 repeatmasker.sh:
 
 .. code-block:: bash
@@ -41,7 +39,7 @@ repeatmasker.sh:
   WORKDIR=/scratch/$USER/repeatmasker/$JOB_ID
   mkdir -p $WORKDIR
   cd $WORKDIR
-  nice -n 10 /exports/software/repeatmasker/repeatmasker-4-0-5/RepeatMasker \
+  /exports/software/repeatmasker/repeatmasker-4-0-5/RepeatMasker \
          -pa $NSLOTS \
          -lib $DATADIR/$REPLIB \
          -dir . \
