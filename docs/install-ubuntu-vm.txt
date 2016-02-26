@@ -18,7 +18,7 @@ Install a Ubuntu VM direct from archive.ubuntu.com:
   virt-install \
   --name example \
   --ram 4096 \
-  --disk path=/var/kvm/images/template.qcow2,size=24,format=qcow2 \
+  --disk path=/var/kvm/images/example.qcow2,size=24,format=qcow2 \
   --vcpus=2,maxvcpus=6 \
   --cpu host \
   --os-type linux \
