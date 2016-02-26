@@ -1,0 +1,29 @@
+.. _install-ubuntu-vm:
+
+#################
+Install Ubuntu VM
+#################
+
+Initial KVM setup if this is the first VM:
+
+.. sourcecode :: bash
+
+  virsh pool-define-as --name kvmpool --type dir --target /var/kvm/images
+  virsh pool-start kvmpool
+
+Install a Ubuntu VM direct from archive.ubuntu.com:
+
+.. sourcecode :: bash
+
+  virt-install \
+  --name example \
+  --ram 4096 \
+  --disk path=/var/kvm/images/template.qcow2,size=24,format=qcow2 \
+  --vcpus=2,maxvcpus=6 \
+  --cpu host \
+  --os-type linux \
+  --os-variant ubuntutrusty \
+  --graphics none \
+  --console pty,target_type=serial \
+  --location 'http://uk.archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/' \
+  --extra-args 'console=ttyS0,115200n8 serial'

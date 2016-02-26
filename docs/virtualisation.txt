@@ -1,0 +1,12 @@
+.. _virtualisation:
+
+##############
+Virtualisation
+##############
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   install-ubuntu-vm
