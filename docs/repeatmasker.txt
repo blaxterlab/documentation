@@ -44,6 +44,7 @@ repeatmasker.sh:
          -lib $DATADIR/$REPLIB \
          -dir . \
          $DATADIR/$SEQFILE
+  rsync -a ./$SEQFILE.* $DATADIR/
 
 
 ************
@@ -54,3 +55,15 @@ qsub command
 
   export DATADIR=`pwd`
   qsub -v SEQFILE=seq.fa -v REPLIB=repeatLib.fa -pe smp 32 /path/to/repeatmasker.sh
+
+
+*****************
+useful one-liners
+*****************
+
+summarise genome size and repeat content across multiple results files in a
+  folder (pattern matching specific to lepbase naming conventions):
+
+::
+
+  perl -0777 -ne '$ARGV=~s/_-.+//;m/total.+?(\d+).+bases.+?(\d+)/s;print "$ARGV\t$1\t",($2/$1*100),"\n"' *_-_scaffolds.fa.tbl
