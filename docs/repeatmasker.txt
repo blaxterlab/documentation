@@ -14,6 +14,7 @@ Typical Usage
          -pa 48 \
          -lib taxon.repeatlib.fa \
          -dir . \
+         -xsmall \
          seq.fa
 
 
@@ -43,6 +44,7 @@ repeatmasker.sh:
          -pa $NSLOTS \
          -lib $DATADIR/$REPLIB \
          -dir . \
+         -xsmall \
          $DATADIR/$SEQFILE
   rsync -a ./$SEQFILE.* $DATADIR/
 
