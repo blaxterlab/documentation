@@ -46,30 +46,30 @@ progressivecactus.sh (Progressive Cactus alignment followed by conversion to an 
 
 .. code-block:: bash
 
-#!/bin/bash
+  #!/bin/bash
 
-#$ -V
-#$ -cwd
-#$ -j y
-#$ -o $JOB_ID.log
-#$ -pe smp 64
+  #$ -V
+  #$ -cwd
+  #$ -j y
+  #$ -o $JOB_ID.log
+  #$ -pe smp 64
 
-SCRATCH=/scratch/$USER/wga/$JOB_ID
-mkdir -p $SCRATCH/$DIR
-cd $SCRATCH
+  SCRATCH=/scratch/$USER/wga/$JOB_ID
+  mkdir -p $SCRATCH/$DIR
+  cd $SCRATCH
 
-export PYTHONPATH=$PYTHONPATH:/exports/software/progressiveCactus/submodules/biopython
-. /exports/software/progressiveCactus/environment
+  export PYTHONPATH=$PYTHONPATH:/exports/software/progressiveCactus/submodules/biopython
+  . /exports/software/progressiveCactus/environment
 
-nice -n 10 /exports/software/progressiveCactus/bin/runProgressiveCactus.sh $DATA/$INFILE ./$DIR ./$DIR/$HALFILE --database kyoto_tycoon --maxThreads 64
+  nice -n 10 /exports/software/progressiveCactus/bin/runProgressiveCactus.sh $DATA/$INFILE ./$DIR ./$DIR/$HALFILE --database kyoto_tycoon --maxThreads 64
 
-nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2assemblyHub.py --gcContent --maxThreads=64 --defaultMemory=10000000000 ./$DIR/$HALFILE ./$DIR/$HUBFILE
+  nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2assemblyHub.py --gcContent --maxThreads=64 --defaultMemory=10000000000 ./$DIR/$HALFILE ./$DIR/$HUBFILE
 
-nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2mafMP.py ./$DIR/$HALFILE $MAFFILE --numProc 64 --refGenome $REFGENOME
+  nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2mafMP.py ./$DIR/$HALFILE $MAFFILE --numProc 64 --refGenome $REFGENOME
 
-rsync -av --remove-source-files ./$DIR $DATA/output
+  rsync -av --remove-source-files ./$DIR $DATA/output
 
-find ./$DIR -depth -type d -empty -delete
+  find ./$DIR -depth -type d -empty -delete
 
 
 
