@@ -1,0 +1,91 @@
+.. _progressivecactus:
+
+##################
+Progressive Cactus
+##################
+
+Progressive Cactus (`link <https://github.com/glennhickey/progressiveCactus>`_)
+
+*************
+Typical Usage
+*************
+
+::
+
+  /exports/software/progressiveCactus/bin/runProgressiveCactus.sh \
+      /path/to/align.txt \
+      /path/to/data/directory \
+      /path/to/output/align.hal \
+      --database kyoto_tycoon \
+      --maxThreads 64
+
+
+************
+Input format
+************
+
+align.txt:
+
+::
+
+  (tax1,(tax2,tax3));
+  tax1 /path/to/tax1.fa
+  tax2* /path/to/tax2.fa
+  tax3 /path/to/tax3.fa
+
+Contains a newick tree on line 1 (don't forget the semicolon) followed by a set of mappings from taxon tames to (soft-masked) fasta files.
+
+A taxon name with and asterisk is marked as reference quality (if no asterisks, all sequences will be treated as reference quality)
+
+
+******************
+Gridengine wrapper
+******************
+
+progressivecactus.sh (Progressive Cactus alignment followed by conversion to an Assembly Hub and a MAF file):
+
+.. code-block:: bash
+
+#!/bin/bash
+
+#$ -V
+#$ -cwd
+#$ -j y
+#$ -o $JOB_ID.log
+#$ -pe smp 64
+
+SCRATCH=/scratch/$USER/wga/$JOB_ID
+mkdir -p $SCRATCH/$DIR
+cd $SCRATCH
+
+export PYTHONPATH=$PYTHONPATH:/exports/software/progressiveCactus/submodules/biopython
+. /exports/software/progressiveCactus/environment
+
+nice -n 10 /exports/software/progressiveCactus/bin/runProgressiveCactus.sh $DATA/$INFILE ./$DIR ./$DIR/$HALFILE --database kyoto_tycoon --maxThreads 64
+
+nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2assemblyHub.py --gcContent --maxThreads=64 --defaultMemory=10000000000 ./$DIR/$HALFILE ./$DIR/$HUBFILE
+
+nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2mafMP.py ./$DIR/$HALFILE $MAFFILE --numProc 64 --refGenome $REFGENOME
+
+rsync -av --remove-source-files ./$DIR $DATA/output
+
+find ./$DIR -depth -type d -empty -delete
+
+
+
+************
+qsub command
+************
+
+::
+
+  qsub -v SEQFILE=seq.fa \
+       -v DIR=input \
+       -v DATA=/path/to/data \
+       -v INFILE=align.txt \
+       -v HALFILE=align.hal \
+       -v HUBFILE=align.hub \
+       -v MAFFILE=align.maf \
+       -v REFGENOME=reference_genome_name \
+       -pe smp 32 \
+       /path/to/repeatmasker.sh

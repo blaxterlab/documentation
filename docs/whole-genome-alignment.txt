@@ -1,0 +1,12 @@
+.. _whole-genome-alignment:
+
+######################
+Whole genome alignment
+######################
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   progressivecactus

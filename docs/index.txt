@@ -11,6 +11,7 @@ Contents:
 
    repeat-masking
    virtualisation
+   whole-genome-alignment
 
 Indices and tables
 ==================

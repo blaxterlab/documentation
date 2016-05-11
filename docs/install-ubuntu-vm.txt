@@ -11,7 +11,7 @@ Initial KVM setup if this is the first VM:
   virsh pool-define-as --name kvmpool --type dir --target /var/kvm/images
   virsh pool-start kvmpool
 
-Install a Ubuntu VM direct from archive.ubuntu.com:
+Install a Ubuntu 14.04 VM direct from archive.ubuntu.com:
 
 .. sourcecode :: bash
 
