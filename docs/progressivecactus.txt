@@ -63,13 +63,13 @@ progressivecactus.sh (Progressive Cactus alignment followed by conversion to an 
 
   nice -n 10 /exports/software/progressiveCactus/bin/runProgressiveCactus.sh $DATA/$INFILE ./$DIR ./$DIR/$HALFILE --database kyoto_tycoon --maxThreads $NSLOTS
 
-if ! [ -z $HUBFILE ]; then
+  if ! [ -z $HUBFILE ]; then
   nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2assemblyHub.py --gcContent --maxThreads=$NSLOTS --defaultMemory=10000000000 ./$DIR/$HALFILE ./$DIR/$HUBFILE
-fi
+  fi
 
-if ! [ -z $MAFFILE ]; then
+  if ! [ -z $MAFFILE ]; then
   nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2mafMP.py ./$DIR/$HALFILE $MAFFILE --numProc $NSLOTS --refGenome $REFGENOME
-fi
+  fi
 
   rsync -av --remove-source-files ./$DIR $DATA/output
 
