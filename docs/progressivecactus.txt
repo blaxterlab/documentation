@@ -61,11 +61,15 @@ progressivecactus.sh (Progressive Cactus alignment followed by conversion to an 
   export PYTHONPATH=$PYTHONPATH:/exports/software/progressiveCactus/submodules/biopython
   . /exports/software/progressiveCactus/environment
 
-  nice -n 10 /exports/software/progressiveCactus/bin/runProgressiveCactus.sh $DATA/$INFILE ./$DIR ./$DIR/$HALFILE --database kyoto_tycoon --maxThreads 64
+  nice -n 10 /exports/software/progressiveCactus/bin/runProgressiveCactus.sh $DATA/$INFILE ./$DIR ./$DIR/$HALFILE --database kyoto_tycoon --maxThreads $NSLOTS
 
-  nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2assemblyHub.py --gcContent --maxThreads=64 --defaultMemory=10000000000 ./$DIR/$HALFILE ./$DIR/$HUBFILE
+if ! [ -z $HUBFILE ]; then
+  nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2assemblyHub.py --gcContent --maxThreads=$NSLOTS --defaultMemory=10000000000 ./$DIR/$HALFILE ./$DIR/$HUBFILE
+fi
 
-  nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2mafMP.py ./$DIR/$HALFILE $MAFFILE --numProc 64 --refGenome $REFGENOME
+if ! [ -z $MAFFILE ]; then
+  nice -n 10 /exports/software/progressiveCactus/submodules/hal/bin/hal2mafMP.py ./$DIR/$HALFILE $MAFFILE --numProc $NSLOTS --refGenome $REFGENOME
+fi
 
   rsync -av --remove-source-files ./$DIR $DATA/output
 
